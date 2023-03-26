@@ -18,5 +18,8 @@ To add a task, simply click on the hour section that you wish to add your task t
 
 To edit a task, simply click on the hour section that you wish to edit, edit your task, and then hit the save button.
 
-To delete a task, click on the task you wish to delete, delete it from the textbox, and then hit the save button.s
+To delete a task, click on the task you wish to delete, delete it from the textbox, and then hit the save button.
+
+[Workday Scheduler w/Date and Time](../Task-Master/Develop/Images/Screenshot%202023-03-26%20at%203.32.26%20PM.png)
+[Hour Layout for Task Manager](../Task-Master/Develop/Images/Screenshot%202023-03-26%20at%203.32.44%20PM.png)
 ## Link
