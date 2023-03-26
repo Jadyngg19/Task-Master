@@ -1,47 +1,48 @@
-// Wait for the page to finish loading before running the code
+// Wrap all code that interacts with the DOM in a call to jQuery to ensure that the code isn't run until the browser has finished rendering all the elements in the HTML.
 $(document).ready(function() {
-  // Display the current date and time at the top of the page
-  $("#currentDay").text(dayjs().format("dddd, MMMM D, YYYY, h:mm A"));
 
-  // Get the current hour in 24-hour format
-  const currentHour = dayjs().hour();
+  // Set the current date and time using day.js
+  var currentTime = dayjs();
+  $("#currentDay").text(currentTime.format("dddd, MMMM D, YYYY, H:m"));
 
-  // Loop through each time-block div and apply the appropriate class based on the current hour
+  console.log(currentTime.hour()); 
+  
+  // Check the time and update the time block classes
   $(".time-block").each(function() {
-    // Extract the hour from the id attribute of the time-block div
-    const hour = parseInt($(this).attr("id").split("-")[1]);
-
-    // If the hour is before the current hour, add the "past" class
-    if (hour < currentHour) {
-      $(this).addClass("past").removeClass("present future");
+  var blockHour = parseInt($(this).attr("id").split("-")[1]);
+    // If the block hour is less than the current hour, add the "past" class
+    if (blockHour < currentTime.hour()) {
+      $(this).addClass("past");
+      $(this).removeClass("present");
+      $(this).removeClass("future");
     }
-    // If the hour is the same as the current hour, add the "present" class
-    else if (hour === currentHour) {
-      $(this).addClass("present").removeClass("past future");
+    // If the block hour is equal to the current hour, add the "present" class
+    else if (blockHour === currentTime.hour()) {
+      $(this).removeClass("past");
+      $(this).addClass("present");
+      $(this).removeClass("future");
     }
-    // If the hour is after the current hour, add the "future" class
+    // If the block hour is greater than the current hour, add the "future" class
     else {
-      $(this).addClass("future").removeClass("past present");
+      $(this).removeClass("past");
+      $(this).removeClass("present");
+      $(this).addClass("future");
     }
-  });
+  }); 
 
-  // Save button event listener
-  $(".saveBtn").on("click", function() {
-    // Get the value of the sibling textarea
-    const text = $(this).siblings(".description").val();
-    // Get the id of the parent time-block div
-    const id = $(this).parent().attr("id");
-    // Save the text and id to local storage
-    localStorage.setItem(id, text);
-  });
+// Load any saved data from localStorage
+$(".description").each(function() {
+var id = $(this).closest(".time-block").attr("id");
+var schedule = localStorage.getItem(id);
+if (schedule !== null) {
+  $(this).text(schedule);
+}
+});
 
-  // Loop through each time-block div and retrieve its saved text from local storage
-  $(".time-block").each(function() {
-    const id = $(this).attr("id");
-    const text = localStorage.getItem(id);
-    // If there is saved text, display it in the textarea
-    if (text !== null) {
-      $(this).children(".description").val(text);
-    }
+// Save button functionality
+$(".saveBtn").on("click", function() {
+    var id = $(this).closest(".time-block").attr("id");
+    var schedule = $(this).siblings(".description").val();
+    localStorage.setItem(id, schedule);
   });
 });
